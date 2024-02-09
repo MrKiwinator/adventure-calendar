@@ -1,0 +1,32 @@
+.calendar-table {
+  
+  &__header {
+    display: flex;
+    padding: 0;
+  }
+
+  &__weekday-conatiner {
+    flex-grow: 1;
+    list-style: none;
+  }
+
+  &__weekday {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 15px 20px;
+  }
+
+  &__body {
+    display: grid;
+    grid-template-columns: [first] auto [second] auto [third] auto [fourth] auto [fifth] auto [sixth] auto [seventh] auto;
+    gap: 10px;
+    padding: 0;
+  }
+
+  &__day {
+    margin: 0 auto;
+    list-style: none;
+    width: 100%;
+  }
+}

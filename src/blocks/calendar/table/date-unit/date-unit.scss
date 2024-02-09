@@ -1,0 +1,22 @@
+.date-unit {
+  display: flex;
+  position: relative;
+  top: 0;
+  left: 0;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  border-radius: map-get($radius, 2);
+  background-color: $snow;
+  transition: all .3s;
+
+  &_current {
+    background-color: $pale-pink;
+  }
+
+  &_unactive {
+    background-color: $platinum;
+  }
+}

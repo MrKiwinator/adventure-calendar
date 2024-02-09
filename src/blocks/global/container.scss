@@ -1,0 +1,15 @@
+.container {
+  margin: 0 auto;
+  max-width: map-get($container-max-widths, xxl);
+  padding: 0 map-get($padding, xxl);
+  transition: all .2s;
+}
+
+@each $breakpoint, $resolution in $screen-width {
+  @media only screen and (min-width: $resolution) {
+    .container {
+      max-width: map-get($container-max-widths, $breakpoint);
+      padding: 0 map-get($padding, xxl);
+    }
+  }
+}

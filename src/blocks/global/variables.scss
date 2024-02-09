@@ -1,0 +1,43 @@
+// variables.scss
+
+// Color scheme:
+$apricot: #edc7b7;
+$snow: #eee2dc;
+$silver-crayola: #bab2b5;
+$deep-blue: #123c69;
+$jazz-jam: #ac3b61;
+$pale-pink: #fadadd;
+$platinum: #e5e4e2;
+$beige: #fffafa;
+
+// Border radius:
+$radius: (
+  1: 5px,
+  2: 10px,
+  3: 15px 
+);
+
+// Container vars:
+$screen-width: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+$padding: (
+  sm: 10px,
+  md: 15px,
+  lg: 20px,
+  xl: 20px,
+  xxl: 20px
+);
+
+$container-max-widths: (
+  sm: 540px - map-get($padding, sm) * 2,
+  md: 720px - map-get($padding, md) * 2,
+  lg: 960px - map-get($padding, lg) * 2,
+  xl: 1140px - map-get($padding, xl) * 2,
+  xxl: 1320px - map-get($padding, xxl) * 2
+);
