@@ -20,18 +20,16 @@
 
 // ================== Calendar Style ===================
 @import "./calendar/calendar.scss";
-// => =============== Header Style =====================
-@import "./calendar/header/calendar-header.scss";
-// => => ============ Date Style =======================
-@import "./calendar/header/date/header-date.scss";
-// => => ============ Nav Btn Style ====================
-@import "./calendar/header/nav-btn/header-nav-btn.scss";
-// => =============== Table Style ======================
-@import "./calendar/table/calendar-table.scss";
-// => => ============ Date-unit Style ==================
-@import "./calendar/table/date-unit/date-unit.scss";
+// =====================================================
+
+// ================== Date Unit Style ==================
+@import "./day/day.scss";
+// =====================================================
+
+// ================== Date Unit Style ==================
+@import "./side-btn/side-btn.scss";
 // =====================================================
 
 // ================== Menu Style =======================
 @import "./menu/menu.scss";
-
+// =====================================================

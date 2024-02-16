@@ -2,36 +2,24 @@ import React from 'react';
 
 interface DateUnitProps {
   dayNumber: number | null;
-  currentDate?: number;
-  active?: boolean;
+  isActive?: boolean;
+  activeMonth?: boolean;
+  isCurrent?: boolean;
 }
 
 const DateUnit: React.FC<DateUnitProps> = ({
   dayNumber, 
-  currentDate, 
-  active = true,
+  isActive = false,
+  activeMonth = true,
+  isCurrent = false,
 }) => {
 
-  const [dayIsOpen, setDayIsOpen] = React.useState(false);
 
-  const handleDateUnitClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setDayIsOpen(true);
-  }
-
-  if (dayNumber === currentDate) {
-    return (
-      <button className="date-unit date-unit_current" onClick={handleDateUnitClick}>
-        {dayNumber}
-      </button>
-    )
-  } else {
-    return (
-      <button className={`date-unit ${!active ? "date-unit_unactive" : ""}`} onClick={handleDateUnitClick}>
-        {dayNumber}
-      </button>
-    )
-  }
+  return (
+    <button className={`day ${!activeMonth ? "day_unactive" : ""} ${isCurrent ? "day_current" : ""} ${isActive ? "day_active" : ""}`}>
+      {dayNumber}
+    </button>
+  )
 }
 
 export default DateUnit;

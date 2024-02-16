@@ -1,7 +1,53 @@
 .calendar {
-  width: 100%;
+  flex-grow: 1;
+  display: flex;
   position: relative;
+  gap: 10px;
   padding: 20px 30px;
   background-color: $beige;
   border-radius: 10px 0 0 10px;
+
+  &__body {
+    flex-grow: 1;
+  }
+
+  &__header {
+    display: flex;
+    padding: 0;
+  }
+
+  &__weekday-container {
+    flex-grow: 1;
+    list-style: none;
+  }
+
+  &__weekday-title {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 15px 20px;
+  }
+
+  &__table {
+    display: grid;
+    grid-template-columns: [first] auto [second] auto [third] auto [fourth] auto [fifth] auto [sixth] auto [seventh] auto;
+    gap: 10px;
+    padding: 0;
+  }
+
+  &__day {
+    margin: 0 auto;
+    list-style: none;
+    width: 100%;
+  }
+
+  &__side-btn {
+    padding: 20px 15px;
+    border-radius: 10px;
+    transition: background-color .3s;
+
+    &:hover {
+      background-color: $platinum;
+    }
+  }
 }

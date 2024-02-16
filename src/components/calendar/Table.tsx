@@ -2,7 +2,17 @@ import React from "react";
 import { Month, ShortWeekDays } from "../../utils/variables";
 import DateUnit from "./DateUnit";
 
-const Table = () => {
+export interface TableProps {
+  onDaySelect: (
+    year: number,
+    month: number,
+    day: number | null
+  ) => void,
+  activeFullDate: Date,
+  chosenPeriod: Date,
+}
+
+const Table: React.FC<TableProps> = ({onDaySelect, activeFullDate, chosenPeriod}) => {
   
   // TODO: Supposed to be a state variable:
   console.log(ShortWeekDays);
@@ -11,23 +21,24 @@ const Table = () => {
 
   // new Date(first: year, month (starting from 0), day)
   const currentFullDate = new Date();
-  const currentYear = currentFullDate.getFullYear();
-  const currentMonth = currentFullDate.getMonth();
+
+  const activeYear = activeFullDate.getFullYear();
+  const activeMonth = activeFullDate.getMonth();
+  const activeDate = activeFullDate.getDate();
   const currentDate = currentFullDate.getDate();
-  // const currentDayOfWeek = currentFullDate.getDay();
-  const [activeDay, setActiveDay] = React.useState(currentFullDate);
+  // const activeDayOfWeek = activeFullDate.getDay();
   
-  // const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-  const lastDateOfMonth = new Date(currentYear, currentMonth + 1, 0);
-  const lastDateOfPrevMonth = new Date(currentYear, currentMonth, 0);
+  // const firstDayOfMonth = new Date(activeYear, activeMonth, 1);
+  const lastDateOfMonth = new Date(activeYear, activeMonth + 1, 0);
+  const lastDateOfPrevMonth = new Date(activeYear, activeMonth, 0);
   const daysInMonth = lastDateOfMonth.getDate();
   const daysInPrevMonth = lastDateOfPrevMonth.getDate();
   const daysFromStart = lastDateOfPrevMonth.getDay(); // Day of the week for the 1st day of the month
 
   
   // console.log("Days from the month start: ", daysFromStart)
-  // console.log("Current date: ", currentDate);
-  // console.log("Current day of the week: ", currentDayOfWeek);
+  // console.log("Active date: ", activeDate);
+  // console.log("Active day of the week: ", activeDayOfWeek);
   // console.log("Days in month: ", daysInMonth);
   // console.log("Last full day of the month: ", lastDateOfMonth);
   // console.log("Last full day of prev month: ", lastDateOfPrevMonth);
@@ -55,7 +66,7 @@ const Table = () => {
         if (index + 1 < daysFromStart) {
           return null; // Padding for days before the 1st day of the month
         }
-        if (index - daysFromStart + 1 > 31) {
+        if (index - daysFromStart + 1 > daysInMonth) {
           return null; 
         }
         return index - daysFromStart + 1;
@@ -63,8 +74,8 @@ const Table = () => {
     }
     // if (period === "week") {
     //   // Рассчитываем день начала текущей недели (понедельник)
-    //   const startOfWeek = new Date(currentFullDate);
-    //   startOfWeek.setDate(currentDate - currentDayOfWeek + (currentDayOfWeek === 0 ? -6 : 1));
+    //   const startOfWeek = new Date(activeFullDate);
+    //   startOfWeek.setDate(activeDate - activeDayOfWeek + (activeDayOfWeek === 0 ? -6 : 1));
 
     //   // Создаем массив с числами месяца для каждого дня недели
     //   return Array.from({ length: 7 }, (_, index) => {
@@ -80,84 +91,104 @@ const Table = () => {
 
   console.log(daysArr);
   
-  let firstWeekOfCurrentMonth = daysArr.slice(0, 7);
-  let lastWeekOfCurrentMonth = daysArr.slice(daysArr.length - 7, daysArr.length);
+  let firstWeekOfActiveMonth = daysArr.slice(0, 7);
+  let lastWeekOfActiveMonth = daysArr.slice(daysArr.length - 7, daysArr.length);
 
-  console.log(lastWeekOfCurrentMonth);
+  console.log(lastWeekOfActiveMonth);
 
-  let prevMonthDaysInCurrent = 0;
-  let nextMonthDaysInCurrent = 0;
+  let prevMonthDaysInActive = 0;
+  let nextMonthDaysInActive = 0;
 
-  firstWeekOfCurrentMonth.forEach((day) => {
+  firstWeekOfActiveMonth.forEach((day) => {
     if (!day) {
-      prevMonthDaysInCurrent++;
+      prevMonthDaysInActive++;
     }
   })
 
-  lastWeekOfCurrentMonth.forEach((day) => {
+  lastWeekOfActiveMonth.forEach((day) => {
     if (!day) {
-      nextMonthDaysInCurrent++;
+      nextMonthDaysInActive++;
     }
   })
 
-  console.log("Prev month days in current month: ", prevMonthDaysInCurrent);
-  console.log("Next month days in current month: ", nextMonthDaysInCurrent);
+  console.log("Prev month days in active month: ", prevMonthDaysInActive);
+  console.log("Next month days in active month: ", nextMonthDaysInActive);
 
-  const handleClick = (day: number | null) => {
-    if (day) {
-      setActiveDay(new Date(currentYear, currentMonth, day))
-    }
+  const isEquialDates = (d1: any, d2: any) => {
+    let date1 = new Date(d1).getTime();
+    let date2 = new Date(d2).getTime();
 
-    console.log("Active Day: ", activeDay);
+    if (date1 === date2) return true;
+    return false;
   }
 
   return (
-    <div className="calendar-table">
-      <div className="calendar-table__container">
-        <ul className="calendar-table__header">
-          {
-            Object.values(ShortWeekDays).map((weekDay, index) => (
-              <li key={"weekDay" + (index + 1)} className="calendar-table__weekday-conatiner">
-                <p className="calendar-table__weekday">
-                  {weekDay}
-                </p>
-              </li>
-            ))
-          }
-        </ul>
-        <ul className="calendar-table__body">
-          {
-            daysArr.map((day, index) => {
-              // Days from prev month in current: 
-              if (!day && index < 7) {
-                return (
-                  <li key={"day" + (index + 1)} className="calendar-table__day">
-                    <DateUnit dayNumber={daysInPrevMonth - prevMonthDaysInCurrent + index + 1} active={false} />
-                  </li>
-                )
-              }
+    <>
+      <ul className="calendar__header">
+        {
+          Object.values(ShortWeekDays).map((weekDay, index) => (
+            <li key={"weekDay" + (index + 1)} className="calendar__weekday-container">
+              <p className="calendar__weekday-title">
+                {weekDay}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+      <ul className="calendar__table">
+        {
+          daysArr.map((day, index) => {
 
-              // Days from next month in current: 
-              if (!day && index >= 31) {
-                return (
-                  <li key={"day" + (index + 1)} className="calendar-table__day">
-                    <DateUnit dayNumber={index + 1 + nextMonthDaysInCurrent - daysArr.length} active={false} />
-                  </li>
-                )
-              }
-
-              // Current month days:
+            // Days from prev month in active: 
+            if (!day && index < 7) {
+              const dayNumber = daysInPrevMonth - prevMonthDaysInActive + index + 1;
               return (
-                <li key={"day" + (index + 1)} className={`calendar-table__day ${(day === currentDate) ? "calendar-table__day_current" : ""}`} onClick={() => handleClick(day)}>
-                  <DateUnit dayNumber={day} currentDate={currentDate}/>
+                <li 
+                  key={"day" + (index + 1)} 
+                  className="calendar__day"
+                  onClick={() => onDaySelect(activeYear, activeMonth - 1, dayNumber)}
+                >
+                  <DateUnit dayNumber={dayNumber} activeMonth={false} />
                 </li>
               )
-            })
-          }
-        </ul>
-      </div>
-      
-    </div>
+            }
+
+            // Days from next month in active: 
+            if (!day && index >= 31) {
+              const dayNumber = index + 1 + nextMonthDaysInActive - daysArr.length;
+              
+              return (
+                <li 
+                  key={"day" + (index + 1)} 
+                  className="calendar__day"
+                  onClick={() => onDaySelect(activeYear, activeMonth + 1, dayNumber)}
+                >
+                  <DateUnit dayNumber={dayNumber} activeMonth={false} />
+                </li>
+              )
+            }
+
+            // Active month days:
+            const current = new Date(`${currentFullDate.getMonth()}/${currentFullDate.getDate()}/${currentFullDate.getFullYear()}`);
+            const active = new Date(`${activeFullDate.getMonth()}/${day}/${activeFullDate.getFullYear()}`);
+            
+            return (
+              <li 
+                key={"day" + (index + 1)} 
+                className="calendar__day" 
+                onClick={() => onDaySelect(activeYear, activeMonth, day)}
+              >
+                <DateUnit 
+                  dayNumber={day} 
+                  isActive={activeDate === day} 
+                  isCurrent={isEquialDates(current, active)} 
+                />
+              </li>
+            )
+          })
+        }
+      </ul>
+    </>
   );
 }
 

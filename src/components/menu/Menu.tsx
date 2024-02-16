@@ -1,14 +1,14 @@
 import React from "react";
 
 interface MenuProps {
-  // date: number | null
+  activeFullDate: Date,
 }
 
-const Menu: React.FC<MenuProps> = ({}) => {
+const Menu: React.FC<MenuProps> = ({activeFullDate}) => {
 
   return (
     <div className="menu">
-      Menu
+      {`${activeFullDate.getDate()}/${activeFullDate.getMonth() + 1}/${activeFullDate.getFullYear()}`}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-.date-unit {
+.day {
   display: flex;
   position: relative;
   top: 0;
@@ -18,5 +18,9 @@
 
   &_unactive {
     background-color: $platinum;
+  }
+  
+  &_active {
+    background-color: $jazz-jam;
   }
 }
