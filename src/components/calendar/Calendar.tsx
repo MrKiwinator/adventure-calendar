@@ -1,4 +1,4 @@
-import Header from "./Header";
+import Title from "./Title";
 import Table, { TableProps } from "./Table";
 import SideBtn, { onSideBtnClickType } from "./SideBtn";
 
@@ -12,7 +12,7 @@ const Calendar: React.FC<CalendarProps> = ({onDaySelect, activeFullDate, chosenP
     <div className="calendar">
         <SideBtn direction="prev" onSideBtnClick={() => onPrevSideBtnClick()} />
         <div className="calendar__body">
-          <Header />
+          <Title chosenPeriod={chosenPeriod} />
           <Table onDaySelect={onDaySelect} activeFullDate={activeFullDate} chosenPeriod={chosenPeriod} />
         </div>
         <SideBtn direction="next" onSideBtnClick={() => onNextSideBtnClick()} />

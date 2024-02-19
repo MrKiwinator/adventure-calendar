@@ -2,12 +2,13 @@ import React from "react";
 import { Month, ShortWeekDays } from "../../utils/variables";
 import DateUnit from "./DateUnit";
 
+export type onDaySelectType = (
+  day: number,
+  month: "prev" | "next" | "current",
+) => void;
+
 export interface TableProps {
-  onDaySelect: (
-    year: number,
-    month: number,
-    day: number | null
-  ) => void,
+  onDaySelect: onDaySelectType,
   activeFullDate: Date,
   chosenPeriod: Date,
 }
@@ -24,26 +25,21 @@ const Table: React.FC<TableProps> = ({onDaySelect, activeFullDate, chosenPeriod}
 
   const activeYear = activeFullDate.getFullYear();
   const activeMonth = activeFullDate.getMonth();
-  const activeDate = activeFullDate.getDate();
-  const currentDate = currentFullDate.getDate();
+  const activeDate =  new Date(activeFullDate.getFullYear(), activeFullDate.getMonth(), activeFullDate.getDate());
+
+  const chosenYear = chosenPeriod.getFullYear();
+  const chosenMonth = chosenPeriod.getMonth();
+  const chosenDate = chosenPeriod.getDate();
+
+  const currentDate = new Date(currentFullDate.getFullYear(), currentFullDate.getMonth(), currentFullDate.getDate());
   // const activeDayOfWeek = activeFullDate.getDay();
   
-  // const firstDayOfMonth = new Date(activeYear, activeMonth, 1);
-  const lastDateOfMonth = new Date(activeYear, activeMonth + 1, 0);
-  const lastDateOfPrevMonth = new Date(activeYear, activeMonth, 0);
+  // const firstDayOfMonth = new Date(chosenYear, chosenMonth, 1);
+  const lastDateOfMonth = new Date(chosenYear, chosenMonth + 1, 0);
+  const lastDateOfPrevMonth = new Date(chosenYear, chosenMonth, 0);
   const daysInMonth = lastDateOfMonth.getDate();
   const daysInPrevMonth = lastDateOfPrevMonth.getDate();
   const daysFromStart = lastDateOfPrevMonth.getDay(); // Day of the week for the 1st day of the month
-
-  
-  // console.log("Days from the month start: ", daysFromStart)
-  // console.log("Active date: ", activeDate);
-  // console.log("Active day of the week: ", activeDayOfWeek);
-  // console.log("Days in month: ", daysInMonth);
-  // console.log("Last full day of the month: ", lastDateOfMonth);
-  // console.log("Last full day of prev month: ", lastDateOfPrevMonth);
-  // console.log("Days in prev month: ", daysInPrevMonth);
-  // console.log("Days in year: ", daysInYear)
 
   const getPeriodLenght = () => {
     if (period === "month") {
@@ -72,18 +68,6 @@ const Table: React.FC<TableProps> = ({onDaySelect, activeFullDate, chosenPeriod}
         return index - daysFromStart + 1;
       })
     }
-    // if (period === "week") {
-    //   // Рассчитываем день начала текущей недели (понедельник)
-    //   const startOfWeek = new Date(activeFullDate);
-    //   startOfWeek.setDate(activeDate - activeDayOfWeek + (activeDayOfWeek === 0 ? -6 : 1));
-
-    //   // Создаем массив с числами месяца для каждого дня недели
-    //   return Array.from({ length: 7 }, (_, index) => {
-    //     const day = new Date(startOfWeek);
-    //     day.setDate(startOfWeek.getDate() + index);
-    //     return day.getDate();
-    //   });
-    // }
     return [];
   }
 
@@ -146,7 +130,7 @@ const Table: React.FC<TableProps> = ({onDaySelect, activeFullDate, chosenPeriod}
                 <li 
                   key={"day" + (index + 1)} 
                   className="calendar__day"
-                  onClick={() => onDaySelect(activeYear, activeMonth - 1, dayNumber)}
+                  onClick={() => onDaySelect(dayNumber, "prev")}
                 >
                   <DateUnit dayNumber={dayNumber} activeMonth={false} />
                 </li>
@@ -154,36 +138,43 @@ const Table: React.FC<TableProps> = ({onDaySelect, activeFullDate, chosenPeriod}
             }
 
             // Days from next month in active: 
-            if (!day && index >= 31) {
+            if (!day && index >= 28) {
               const dayNumber = index + 1 + nextMonthDaysInActive - daysArr.length;
               
               return (
                 <li 
                   key={"day" + (index + 1)} 
                   className="calendar__day"
-                  onClick={() => onDaySelect(activeYear, activeMonth + 1, dayNumber)}
+                  onClick={() => onDaySelect(dayNumber, "next")}
                 >
                   <DateUnit dayNumber={dayNumber} activeMonth={false} />
                 </li>
               )
             }
 
-            // Active month days:
-            const current = new Date(`${currentFullDate.getMonth()}/${currentFullDate.getDate()}/${currentFullDate.getFullYear()}`);
-            const active = new Date(`${activeFullDate.getMonth()}/${day}/${activeFullDate.getFullYear()}`);
-            
+            if (day) {
+              // Active month days:
+              const chosen = new Date(chosenPeriod.getFullYear(), chosenPeriod.getMonth(), day);
+
+              return (
+                <li 
+                  key={"day" + (index + 1)} 
+                  className="calendar__day" 
+                  onClick={() => onDaySelect(day, "current")}
+                >
+                  <DateUnit 
+                    dayNumber={day} 
+                    isActive={activeDate.getTime() === chosen.getTime()} 
+                    isCurrent={isEquialDates(currentDate, chosen)} 
+                  />
+                </li>
+              )
+            }
+
             return (
-              <li 
-                key={"day" + (index + 1)} 
-                className="calendar__day" 
-                onClick={() => onDaySelect(activeYear, activeMonth, day)}
-              >
-                <DateUnit 
-                  dayNumber={day} 
-                  isActive={activeDate === day} 
-                  isCurrent={isEquialDates(current, active)} 
-                />
-              </li>
+              <div>
+                Some Error occure, try once more!
+              </div>
             )
           })
         }

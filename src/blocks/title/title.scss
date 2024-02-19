@@ -1,0 +1,23 @@
+.title {
+  position: relative;
+
+  &__month {
+    min-width: 150px;
+    text-align: center;
+    margin: 0;
+    padding: 5px 15px;
+
+    &_prev {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    &_next {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}
+

@@ -1,6 +1,7 @@
 import React from "react";
 import Calendar from "./calendar/Calendar";
 import Menu from "./menu/Menu";
+import { onDaySelectType } from "./calendar/Table";
 
 const Content = () => {
   const currentFullDate = new Date();
@@ -8,23 +9,29 @@ const Content = () => {
   const [activeFullDate, setActiveFullDate] = React.useState(currentFullDate);
   const [chosenPeriod, setChosenPeriod] = React.useState(activeFullDate);
 
-  const handleDaySelect = (year: number, month: number, day: number | null) => {
-    if (day) {
-      console.log("DATE: ", new Date(year, month, day));
+  const handleDaySelect: onDaySelectType = (day, month) => {
 
-      setActiveFullDate(new Date(year, month, day))
+    switch (month) {
+      case "current":
+        setActiveFullDate(new Date(chosenPeriod.getFullYear(), chosenPeriod.getMonth(), day));
+        return;
+      case "next":
+        setActiveFullDate(new Date(chosenPeriod.getFullYear(), chosenPeriod.getMonth() + 1, day));
+        handleNextSideBtnClick();
+        return;
+      case "prev":
+        setActiveFullDate(new Date(chosenPeriod.getFullYear(), chosenPeriod.getMonth() - 1, day));
+        handlePrevSideBtnClick();
+        return;
     }
-
-    console.log("Active Date: ", activeFullDate);
-    console.log(currentFullDate);
   }
 
   const handleNextSideBtnClick = () => {
-    // setActiveFullDate(new Date(activeFullDate.getFullYear(), activeFullDate.getMonth() + 1, 1));
+    setChosenPeriod(new Date(chosenPeriod.getFullYear(), chosenPeriod.getMonth() + 1, 1));
   }
 
   const handlePrevSideBtnClick = () => {
-    // setActiveFullDate(new Date(activeFullDate.getFullYear(), activeFullDate.getMonth() - 1, 1));
+    setChosenPeriod(new Date(chosenPeriod.getFullYear(), chosenPeriod.getMonth() - 1, 1));
   }
 
   return (
