@@ -28,15 +28,15 @@ const Table: React.FC<TableProps> = ({onDaySelect, activeFullDate, chosenPeriod}
   const activeDate =  new Date(activeFullDate.getFullYear(), activeFullDate.getMonth(), activeFullDate.getDate());
 
   const chosenYear = chosenPeriod.getFullYear();
-  const chosenMonth = chosenPeriod.getMonth();
+  const monthDirection = chosenPeriod.getMonth();
   const chosenDate = chosenPeriod.getDate();
 
   const currentDate = new Date(currentFullDate.getFullYear(), currentFullDate.getMonth(), currentFullDate.getDate());
   // const activeDayOfWeek = activeFullDate.getDay();
   
-  // const firstDayOfMonth = new Date(chosenYear, chosenMonth, 1);
-  const lastDateOfMonth = new Date(chosenYear, chosenMonth + 1, 0);
-  const lastDateOfPrevMonth = new Date(chosenYear, chosenMonth, 0);
+  // const firstDayOfMonth = new Date(chosenYear, monthDirection, 1);
+  const lastDateOfMonth = new Date(chosenYear, monthDirection + 1, 0);
+  const lastDateOfPrevMonth = new Date(chosenYear, monthDirection, 0);
   const daysInMonth = lastDateOfMonth.getDate();
   const daysInPrevMonth = lastDateOfPrevMonth.getDate();
   const daysFromStart = lastDateOfPrevMonth.getDay(); // Day of the week for the 1st day of the month

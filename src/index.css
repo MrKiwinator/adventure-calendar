@@ -129,20 +129,59 @@ button {
   position: relative;
 }
 .title__month {
+  position: relative;
   min-width: 150px;
   text-align: center;
   margin: 0;
   padding: 5px 15px;
+  align-self: center;
 }
 .title__month_prev {
   position: absolute;
-  top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
-.title__month_next {
-  position: absolute;
-  top: 0;
-  right: 0;
+
+.fade-out-left-enter {
+  opacity: 1;
+}
+
+.fade-out-left-exit {
+  opacity: 0;
+  transform: translateX(-120%);
+  transition: all 500ms;
+}
+
+.fade-out-right-enter {
+  opacity: 1;
+}
+
+.fade-out-right-exit {
+  opacity: 0;
+  transform: translateX(20%);
+  transition: all 500ms;
+}
+
+.fade-in-left-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.fade-in-left-exit {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 500ms;
+}
+
+.fade-in-right-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.fade-in-right-exit {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 500ms;
 }
 
 .day {
@@ -178,6 +217,10 @@ button {
   background-color: #fffafa;
   border-radius: 0 10px 10px 0;
   padding: 20px 30px;
+}
+.menu__header {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 /*# sourceMappingURL=index.css.map */

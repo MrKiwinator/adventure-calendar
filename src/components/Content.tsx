@@ -8,6 +8,7 @@ const Content = () => {
 
   const [activeFullDate, setActiveFullDate] = React.useState(currentFullDate);
   const [chosenPeriod, setChosenPeriod] = React.useState(activeFullDate);
+  const [monthMovingDirection, setMonthMovingDirection] = React.useState<"next" | "prev" | undefined>(undefined);
 
   const handleDaySelect: onDaySelectType = (day, month) => {
 
@@ -28,22 +29,34 @@ const Content = () => {
 
   const handleNextSideBtnClick = () => {
     setChosenPeriod(new Date(chosenPeriod.getFullYear(), chosenPeriod.getMonth() + 1, 1));
+    setMonthMovingDirection("next");
   }
 
   const handlePrevSideBtnClick = () => {
     setChosenPeriod(new Date(chosenPeriod.getFullYear(), chosenPeriod.getMonth() - 1, 1));
+    setMonthMovingDirection("prev");
+  }
+
+  const handleBackToActiveDayBtn = () => {
+    setChosenPeriod(activeFullDate);
+
+    activeFullDate.getTime() > chosenPeriod.getTime() ? setMonthMovingDirection("next") : setMonthMovingDirection("prev");
   }
 
   return (
     <div className="content">
       <Calendar 
-        onDaySelect={handleDaySelect} 
+        onDaySelect={handleDaySelect}
         activeFullDate={activeFullDate}
         chosenPeriod={chosenPeriod}
         onNextSideBtnClick={() => handleNextSideBtnClick()}
-        onPrevSideBtnClick={() => handlePrevSideBtnClick()}
+        onPrevSideBtnClick={() => handlePrevSideBtnClick()} 
+        monthDirection={monthMovingDirection} 
       />
-      <Menu activeFullDate={activeFullDate} />
+      <Menu 
+        activeFullDate={activeFullDate} 
+        onBackToActiveDayBtn={() => handleBackToActiveDayBtn()}
+      />
     </div>
   )
 }

@@ -3,4 +3,9 @@
   background-color: $beige;
   border-radius: 0 10px 10px 0;
   padding: 20px 30px;
+
+  &__header {
+    display: flex;
+    justify-content: space-evenly;
+  }
 }
